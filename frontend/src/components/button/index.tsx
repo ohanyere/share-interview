@@ -1,11 +1,11 @@
 import  { type buttonTypes } from "./buttonTypes";
 
-const Button = ({className, children,url,  ...rest} : buttonTypes) => {
+const Button = ({className, children,url,onClick,  ...rest} : buttonTypes) => {
     return ( 
         <button 
             className={` ${className}`}
             {...rest}
-            // onClick={onClick}
+            onClick={onClick}
         >
             {children}
         </button>

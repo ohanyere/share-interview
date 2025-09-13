@@ -9,6 +9,8 @@ import Navigation from "./components/navigation";
 import PrivateRoute from "./components/private-route";
 import ContributeData from "./pages/contribute-data";
 import Questions from "./pages/questions";
+import Question from "./pages/question";
+import UpdateCard from "./components/update-card";
 
 
 
@@ -19,35 +21,32 @@ import Questions from "./pages/questions";
 const App = () => {
 
   return (
-    <div className="h-full">
+    <>
     <BrowserRouter>
     <Navigation />
+    <main className="pt">
+
       <Routes>
-        
       <Route path="/" element={<Home/>} />
       <Route path="/sign-up" element={<SignUp />} />
      <Route path="/sign-in" element={<SignIn />} />
      <Route path="/password-reset" element={<ForgetPassword/>} />
+     <Route path="/contribute-data" element={<PrivateRoute />}>
      <Route path="/contribute-data" element={<ContributeData />} >
      </Route>
-     <Route path="/view" element={<Questions />} />
-     <Route path="*" element={<NotFound />} /> 
-     {/* <Route path="/profile" element={<Privateroute />} >
-        <Route path="/profile" element={<StartupProfilePage />} />
      </Route>
-     
-     
-{/* 
-     <Route path="/upload" element={<Upload />} />
-     <Route path="/result" element={<Result />} />
-     <Route path="/history" element={<History />} />
-    
-
-      */}
-      </Routes>
+     <Route path="/view" element={<PrivateRoute />}>
+     <Route path="/view" element={<Questions />} />
+     </Route>
+     <Route path="*" element={<NotFound />} /> 
+     <Route path="/cards/:id" element={<Question/>} /> 
+     <Route path="/cards/update/:id" element={<UpdateCard />} />
+     </Routes>
+      </main> 
     </BrowserRouter>
     <Toaster />
-    </div>
+    </>
+    
   )
 }
 
