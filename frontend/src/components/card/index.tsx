@@ -1,8 +1,8 @@
-import { Clock } from "lucide-react";
-import { Link } from "react-router-dom";
-import QuestionId from "../question-mat";
 
-interface Question {
+import { Link } from "react-router-dom";
+
+
+type Question = {
   id: string;
   department: string;
   coursecode: string;
@@ -14,22 +14,14 @@ interface Question {
     userId : string
 }
 
-interface CardProps {
+type CardProps = {
   data: Question[];
 }
 
 const Card: React.FC<CardProps> = ({ data: filteredQuestions }) => {
-    console.log(filteredQuestions);
+  
     
-  const getDifficultyColor = (difficulty: string) => {
-    switch (difficulty) {
-      case 'Easy': return 'text-green-600 bg-green-100';
-      case 'Medium': return 'text-yellow-600 bg-yellow-100';
-      case 'Hard': return 'text-red-600 bg-red-100';
-      default: return 'text-gray-600 bg-gray-100';
-    }
-  };
-  console.log(filteredQuestions);
+
   
   return (
     

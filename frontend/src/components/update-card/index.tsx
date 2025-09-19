@@ -9,7 +9,7 @@ type CardData = {
   coursecode: string;
   level: string;
   difficulty: string;
-  questions: string[];
+  questions: string[]  | string;
   tips: string;
   rating: number;
 }
@@ -58,7 +58,7 @@ const UpdateCard = () => {
       ...formData,
       questions: Array.isArray(formData.questions)
         ? formData.questions
-        : formData.questions.split(/\r?\n|,|;/).map(q => q.trim()).filter(Boolean)
+        : formData.questions.split(/\r?\n|,|;/).map((q:string) => q.trim()).filter(Boolean)
     });
     toast.success("card updated!");
     navigate("/view");

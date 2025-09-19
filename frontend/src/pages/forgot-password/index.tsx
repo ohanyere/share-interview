@@ -4,6 +4,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link } from "react-router-dom";
 import Button from "../../components/button";
+import toast from "react-hot-toast";
 
 const schema = z.object({
   email: z.string().email("Invalid email address"),

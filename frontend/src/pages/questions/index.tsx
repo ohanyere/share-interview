@@ -33,7 +33,7 @@ const Question = () => {
   const [filters, setFilters] = useState<{ coursecode?: string; level?: string }>({});
   const [searchTerm, setSearchTerm] = useState(""); 
   const [level, setLevel] = useState(""); 
-  const inputref = useRef(null)
+  const inputref = useRef<HTMLInputElement>(null)
 
   const { data, status } = useQuery({
     queryKey: ["cards"],
@@ -75,7 +75,7 @@ const debouncedUpdateLevel = useMemo(() =>
 
 useEffect(()=> {
   if(inputref.current){
-    inputref.current.focus()
+    inputref.current?.focus()
   }
 },[])
  
