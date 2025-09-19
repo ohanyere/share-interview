@@ -56,7 +56,7 @@ export const registerUser = async (
   );
   const user = userCredential.user;
 
-  await updateProfile(auth.currentUser, { displayName: name });
+  await updateProfile(user, { displayName: name });
 
   const docRef = doc(db, "users", user.uid);
   await setDoc(docRef, {
