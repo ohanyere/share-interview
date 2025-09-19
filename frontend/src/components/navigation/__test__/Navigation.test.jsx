@@ -41,7 +41,7 @@ test("renders desktop navigation on wide screen", () => {
     </MemoryRouter>
   );
 
-  expect(screen.getByText(/view/i)).toBeInTheDocument();
+  expect(screen.getByText(/question/i)).toBeInTheDocument();
 });
 
 test("renders mobile menu on small screen", async() => {
@@ -67,7 +67,7 @@ test("checks if view is render on small screen when hanmburgericon is clicked", 
   );
   const button = screen.getByRole("button")
   await userEvent.click(button)
-  expect(screen.getByText(/view/i)).toBeInTheDocument()
+  expect(screen.getByText(/question/i)).toBeInTheDocument()
     await userEvent.click(button)
    expect(screen.getByRole("button")).toBeInTheDocument()
  

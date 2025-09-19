@@ -43,6 +43,7 @@ export const signUp = createAsyncThunk<
 });
 
 // Google sign-in
+// Google sign-in
 export const signUpWithGoogle = createAsyncThunk<
   { name: string; email: string },
   void,
@@ -50,10 +51,14 @@ export const signUpWithGoogle = createAsyncThunk<
 >("auth/signInWithGoogle", async (_, thunkAPI) => {
   try {
     const result = await Oauth.signInWithGoogle();
-    return {
-      name: result .user .displayName ?? "",
-      email: result.user.email ?? "",
-    };
+    console.log(result, "hello result");
+    
+      // Correctly return the required object structure
+      return {
+        name: result.name ?? "",
+        email: result.email ?? "",
+      };
+   
   } catch (error) {
     if (error instanceof Error) {
       return thunkAPI.rejectWithValue(error.message);

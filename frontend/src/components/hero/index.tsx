@@ -8,20 +8,20 @@ const handleNavigate = () : void => {
         navigate("/view")
     }
   return (
-    <section className="bg-gray-50 min-h-screen flex items-center justify-center px-6">
-      <div className="text-center max-w-3xl text  ">
-        <h1 className="text-4xl  text- md:text-6xl font-extrabold text-gray-700 leading-normal text-center">
+    <section className="bg-gray-50 min-h-screen flex sm:items-center pt-[7rem] sm:pt-0 justify-center px-6  ">
+      <div className="text-center w-5/6 text bg-whie ">
+        <h1 className="text-4xl   md:text-6xl font-extrabold text-gray-700 sm:leading-normal leading-[1.3]  text-center sm:w-5/6 mx-auto">
           Share <span className="text-blue-600">Past Quiz Questions</span>  
           & Help Others Succeed 
         </h1>
         <p className="mt-6 text-lg text-gray-600 text-center ">
           A community-driven platform where students share real quiz questions 
-          from courses to help each other prepare better.
+          from courses to help  fellow students prepare better.
         </p>
         <div className="mt-8 flex sm:justify-center w-full flex-col sm:flex-row gap-7">
           <Button
             onClick={handleNavigate}
-            className="px-12 py-3 bg-black  text-white font-semibold rounded-xl shadow-md hover:bg-blue-700 transition"
+            className="px-12 py-3 bg-black  text-white font-semibold rounded-xl shadow-md hover:bg-black/50 transition"
           >
             Get Started
           </Button>

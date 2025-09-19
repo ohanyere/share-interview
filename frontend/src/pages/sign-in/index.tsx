@@ -102,7 +102,7 @@ const Signin = () => {
             disabled={isSubmitting}
             className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-lg font-semibold transition"
           >
-            {isSubmitting ? "Signing in..." : "Continue"}
+            {isLoading ? "Signing in..." : "Continue"}
           </Button>
         </form>
 

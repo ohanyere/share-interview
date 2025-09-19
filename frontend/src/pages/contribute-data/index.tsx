@@ -18,17 +18,21 @@ const ContributeData = () => {
     rating: number;
   };
 
-  type answer = {
-  answer : string,
-  question : string
+  type Answer = {
+  answer: string;
+  question: string;
 }
 
-type error = {
-  stack : string,
-  message : string
+type ApiResponseSuccess = {
+  answers: Answer[];
 }
 
-type Apiresponse = answer | error
+type ApiError = {
+  stack: string;
+  message: string;
+}
+
+type ApiResponse = ApiResponseSuccess | ApiError;
 
   const [formData, setFormData] = useState<FormData>({
     department: '',
@@ -40,15 +44,6 @@ type Apiresponse = answer | error
     rating: 0
   });
 
-  const {
-    department,
-    level,
-    coursecode,
-    difficulty,
-    questions,
-    tips,
-    rating
-  } = formData
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
@@ -60,85 +55,78 @@ type Apiresponse = answer | error
     setFormData(prev => ({ ...prev, rating }));
   };
 
-  const handleSubmit = async () => {
-    // Convert questions string to array only when submitting
-    const questionsArray = questions
-      .split(/\r?\n|,|;/)
-      .map(q => q.trim())
-      .filter(Boolean);
+ const handleSubmit = async () => {
+  // Destructure formData for easier access and cleaner code
+  const { department, coursecode, level, difficulty, tips, rating, questions } = formData;
 
+  // Convert questions string to array only when submitting
+  const questionsArray = questions
+    .split(/\r?\n|,|;/)
+    .map(q => q.trim())
+    .filter(Boolean);
+
+  if (
+    !department ||
+    !coursecode ||
+    !level ||
+    !difficulty ||
+    questionsArray.length === 0 ||
+    !tips ||
+    rating <= 0
+  ) {
+    toast.error("Please fill in all form fields!");
+    return;
+  }
+
+  try {
+    const response = await fetch("http://localhost:5000/api/quiz", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        questions: questionsArray,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const datas: ApiResponse = await response.json();
     
-    if (
-      !department ||
-      !coursecode ||
-      !level ||
-      !difficulty ||
-      questionsArray.length === 0 ||
-      !tips ||
-      rating <= 0
-    ) {
-      toast.error("Please fill in all form fields!");
-      return;
-    }
-
-
-    try {
-
-       const response = await fetch("http://localhost:5000/api/quiz", {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          questions : questionsArray
-        }),
-      });
-
-      if (!response.ok) {        
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const data: any  = await response.json();
-      console.log(data);
-      
-
+    if("answers" in datas){
       await addDoc(collection(db, "data"), {
-        department: formData.department,
-        coursecode: formData.coursecode,
-        level: formData.level,
-        difficulty: formData.difficulty,
-        questions: questionsArray, 
-        tips: formData.tips,
-        rating: Number(formData.rating),
-        answers: data.answers,
-        userId: auth.currentUser?.uid,
-        createdAt: serverTimestamp(),
-      });
+      department: department,
+      coursecode: coursecode,
+      level: level,
+      difficulty: difficulty,
+      questions: questionsArray,
+      tips: tips,
+      rating: Number(rating),
+      answers: datas.answers, // Corrected variable name
+      userId: auth.currentUser?.uid,
+      createdAt: serverTimestamp(),
+    });
 
-      toast.success("Thank you for sharing your past quiz questions!");
-
-      // Reset form
-      setFormData({
-        department: '',
-        coursecode: '',
-        difficulty: 'Medium',
-        level: '',
-        questions: '',
-        tips: '',
-        rating: 0
-      });
-      navigate("/view")
-    } catch (error) {
-      if(error instanceof Error) {
-        toast.error(error.message || "Failed to save contribution to database");
-      }
-      toast.error("Failed to save contribution to database");
+     toast.success("Thank you for sharing your past quiz questions!");
+    navigate("/view");
     }
-  };
+    else {
+    toast.error(datas.message || "Failed to get answers from the server.");
+  }
+
+  } catch (error) {
+    if (error instanceof Error) {
+      toast.error(error.message || "Failed to save contribution to database");
+    }
+    toast.error("Failed to save contribution to database");
+  }
+};
 
   return (
-    <div className="max-w-4xl mx-auto pt-[7rem] z-[-2]">
-      <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-8 shadow-xl">
+    <div className="max-w-4xl mx-auto pt-[5rem] z-[-2]">
+      <div className="bg-white/40 backdrop-blur-sm rounded-2xl p-8 shadow-xl">
         <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">Share Your Quiz Questions</h2>
         <div className="space-y-6">
           <div className="grid md:grid-cols-2 gap-6">
@@ -188,6 +176,7 @@ type Apiresponse = answer | error
                 onChange={handleInputChange}
                 className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
               >
+                <option value="">select level</option>
                 <option value={100}>100</option>
                 <option value={200}>200</option>
                 <option value={300}>300</option>
@@ -221,7 +210,7 @@ type Apiresponse = answer | error
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Overall Rating</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Overall Rating of how difficult the questions are</label>
             <div className="flex items-center space-x-2">
               {[1, 2, 3, 4, 5].map(star => (
                 <button

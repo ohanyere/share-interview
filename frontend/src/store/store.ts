@@ -1,38 +1,17 @@
-// import { configureStore, combineReducers} from "@reduxjs/toolkit";
-// import storage from "redux-persist/lib/storage";
-// import { persistReducer} from "redux-persist";
-// import { persistStore } from 'redux-persist';
-// import { authSlice } from "../features/auth/authSlice";
-
-
-// const persistConfig = {
-//     key : "root",
-//     version : 1,
-//     storage,
-//     whiteList : ["auth"]
-// }
-
-// const CombineReducers = combineReducers({
-//     auth : authSlice
-// })
-
-// const persistedReducer = persistReducer(persistConfig, CombineReducers)
-// export const store = configureStore({
-//     reducer : persistedReducer,
-//     middleware: (getDefaultMiddleware) =>
-//     getDefaultMiddleware({
-//       serializableCheck: false,
-//     }),
-// })
-// export let persistor = persistStore(store)
-// export type RootState = ReturnType<typeof store.getState>
-// export type AppDispatch = typeof store.dispatch
-
-
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
-import { persistReducer } from "redux-persist";
+import {
+  persistReducer,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+  persistStore,
+} from "redux-persist";
 import storage from "redux-persist/lib/storage";
-import authReducer from "../features/auth/authSlice";
+
+import { authSlice } from "../features/auth/authSlice";
 
 const persistConfig = {
   key: "root",
@@ -40,15 +19,24 @@ const persistConfig = {
 };
 
 const rootReducer = combineReducers({
-  auth: authReducer,
+  auth: authSlice.reducer, 
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
+
 export const store = configureStore({
   reducer: persistedReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }),
 });
 
+
+export const persistor = persistStore(store);
 
 export type RootState = ReturnType<typeof rootReducer>;
 export type AppDispatch = typeof store.dispatch;

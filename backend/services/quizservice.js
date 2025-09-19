@@ -1,6 +1,7 @@
+import { GENAI_API_KEY } from "../config/env.js";
 import { GoogleGenerativeAI } from "@google/generative-ai";
-const b = process.env.GENAI_API_KEY
-const genAI = new GoogleGenerativeAI(b);
+
+const genAI = new GoogleGenerativeAI(GENAI_API_KEY);
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
 export async function generateQuizAnswers({ questions }) {
