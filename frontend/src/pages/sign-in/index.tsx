@@ -9,6 +9,7 @@ import { resetFlags, signIn, signUpWithGoogle } from "../../features/auth/authSl
 import type { AppDispatch, RootState } from "../../store/store";
 import Button from "../../components/button";
 import { useEffect } from "react";
+{}
 
 
 const schema = z.object({
@@ -47,7 +48,7 @@ const Signin = () => {
   };
 
   const handleGoogle = () => {
-      dispatch(signUpWithGoogle()).unwrap();
+      dispatch(signUpWithGoogle());
   };
 
   return (

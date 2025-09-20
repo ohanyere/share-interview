@@ -56,10 +56,8 @@ type ApiResponse = ApiResponseSuccess | ApiError;
   };
 
  const handleSubmit = async () => {
-  // Destructure formData for easier access and cleaner code
   const { department, coursecode, level, difficulty, tips, rating, questions } = formData;
 
-  // Convert questions string to array only when submitting
   const questionsArray = questions
     .split(/\r?\n|,|;/)
     .map(q => q.trim())
@@ -79,49 +77,47 @@ type ApiResponse = ApiResponseSuccess | ApiError;
   }
 
   try {
-    const response = await fetch("http://localhost:5000/api/quiz", {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        questions: questionsArray,
-      }),
-    });
+  const response = await fetch("/api/quiz", {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ questions: questionsArray }),
+  });
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
+  if (!response.ok) {
+    const text = await response.text();
+    console.error('API error body:', text);
+    throw new Error(`Server returned ${response.status}`);
+  }
 
-    const datas: ApiResponse = await response.json();
-    
-    if("answers" in datas){
-      await addDoc(collection(db, "data"), {
-      department: department,
-      coursecode: coursecode,
-      level: level,
-      difficulty: difficulty,
+  const datas: ApiResponse = await response.json();
+
+  if ("answers" in datas) {
+    await addDoc(collection(db, "data"), {
+      department,
+      coursecode,
+      level,
+      difficulty,
       questions: questionsArray,
-      tips: tips,
+      tips,
       rating: Number(rating),
-      answers: datas.answers, // Corrected variable name
-      userId: auth.currentUser?.uid,
+      answers: datas.answers,
+      userId: auth.currentUser?.uid ?? null,
       createdAt: serverTimestamp(),
     });
 
-     toast.success("Thank you for sharing your past quiz questions!");
+    toast.success("Thank you for sharing your past quiz questions!");
     navigate("/view");
-    }
-    else {
+    return;
+  } else {
+    console.error("API returned error object:", datas);
     toast.error(datas.message || "Failed to get answers from the server.");
+    return;
   }
+} catch (err) {
+  console.error("Contribution error:", err);
+  toast.error(err instanceof Error ? err.message : "Failed to save contribution to database");
+}
 
-  } catch (error) {
-    if (error instanceof Error) {
-      toast.error(error.message || "Failed to save contribution to database");
-    }
-    toast.error("Failed to save contribution to database");
-  }
 };
 
   return (
