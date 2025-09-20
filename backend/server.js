@@ -16,13 +16,13 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-console.log(GENAI_API_KEY);
+
 
 app.use("/api/quiz", quizRoutes);
 
 // Serve frontend in production
 if (process.env.NODE_ENV === "production") {
-  const frontendPath = path.join(__dirname, "../frontend/build");
+  const frontendPath = path.join(__dirname, "../dist/index.html");
 
   app.use(express.static(frontendPath));
 
