@@ -1,4 +1,5 @@
-import { PORT, GENAI_API_KEY } from "./config/env.js";
+// backend/server.js
+import { PORT } from "./config/env.js";
 import path from "path";
 import express from "express";
 import cors from "cors";
@@ -16,17 +17,15 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-
-
 app.use("/api/quiz", quizRoutes);
 
-// Serve frontend in production
+
 if (process.env.NODE_ENV === "production") {
-  const frontendPath = path.join(__dirname, "../dist/index.html");
+  const frontendPath = path.join(__dirname, "../frontend/dist");
 
   app.use(express.static(frontendPath));
 
-  // Fallback route for React app
+ 
   app.use((req, res) => {
     res.sendFile(path.join(frontendPath, "index.html"));
   });
