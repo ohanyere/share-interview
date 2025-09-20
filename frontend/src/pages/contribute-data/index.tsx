@@ -43,6 +43,7 @@ type ApiResponse = ApiResponseSuccess | ApiError;
     tips: '',
     rating: 0
   });
+  const [loading, setLoading] = useState(false)
 
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -77,6 +78,7 @@ type ApiResponse = ApiResponseSuccess | ApiError;
   }
 
   try {
+    setLoading(true)
   const response = await fetch("/api/quiz", {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -104,13 +106,14 @@ type ApiResponse = ApiResponseSuccess | ApiError;
       userId: auth.currentUser?.uid ?? null,
       createdAt: serverTimestamp(),
     });
-
+    setLoading(false)
     toast.success("Thank you for sharing your past quiz questions!");
     navigate("/view");
     return;
   } else {
     console.error("API returned error object:", datas);
     toast.error(datas.message || "Failed to get answers from the server.");
+    setLoading(false)
     return;
   }
 } catch (err) {
@@ -221,12 +224,17 @@ type ApiResponse = ApiResponseSuccess | ApiError;
             </div>
           </div>
 
-          <button
-            onClick={handleSubmit}
-            className="w-full bg-blue-600 text-white py-4 rounded-xl font-semibold hover:bg-blue-400 transition-all duration-300 transform hover:scale-105 shadow-lg"
-          >
-            Share Your Experience
-          </button>
+                  <button
+      onClick={handleSubmit}
+      disabled={loading}
+      className={`w-full py-4 rounded-xl font-semibold transition-all duration-300 transform shadow-lg
+        ${loading
+          ? "bg-gray-400 text-gray-200 cursor-not-allowed"
+          : "bg-blue-600 text-white hover:bg-blue-400 hover:scale-105 cursor-pointer"
+        }`}
+    >
+      {loading ? "Saving..." : "Share Your Experience"}
+    </button>
         </div>
       </div>
     </div>
