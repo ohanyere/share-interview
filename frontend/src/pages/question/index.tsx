@@ -3,12 +3,12 @@ import { doc, getDoc } from "firebase/firestore";
 import { db , auth} from "../../firebase.config";
 import { useQuery } from "@tanstack/react-query";
 import { Star } from "lucide-react";
-
+import Spinner from "../../components/spinner";
 type answer = {
   answer : string,
   question : string
 }
-interface CardData {
+type CardData = {
   id: string;
   department: string;
   coursecode: string;
@@ -45,11 +45,7 @@ const Question = () => {
   });
 
   if (isLoading)
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <p className="text-gray-500 text-lg animate-pulse">Loading...</p>
-      </div>
-    );
+    return <Spinner/>
 
   if (isError)
     return (
@@ -147,7 +143,7 @@ const Question = () => {
     {auth.currentUser?.uid === card.userId && (
       <Link
         to={`/cards/update/${card.id}`}
-        className="text-blue-600 hover:text-blue-800 font-medium"
+        className="text-blue-600 hover:text-blue-800 font-medium capitalize"
       >
          Edit Details
       </Link>

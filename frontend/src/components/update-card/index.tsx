@@ -65,7 +65,7 @@ const UpdateCard = () => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-6 bg-white rounded-xl shadow-md space-y-6">
+    <div className="max-w-3xl mx-auto p-6 bg-white rounded-xl shadow-md space-y-6 mt-[4rem]">
       <h2 className="text-2xl font-bold">Update Card</h2>
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">Department</label>

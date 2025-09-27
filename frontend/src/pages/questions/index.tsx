@@ -9,7 +9,7 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import { useState, useMemo, useEffect, useRef } from "react";
 import { Star } from "lucide-react";
-
+import Spinner from "../../components/spinner";
 // import {debounce} from "lodash"
 
 export type CardData = {
@@ -101,11 +101,7 @@ useEffect(()=> {
   };
 
   if (status === "pending") {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <p className="text-gray-500 text-lg animate-pulse">Loading cards...</p>
-      </div>
-    );
+    return <Spinner />
   }
 
   if (status === "error") {
@@ -148,8 +144,6 @@ useEffect(()=> {
           <option value="200">200</option>
           <option value="300">300</option>
           <option value="400">400</option>
-          <option value="500">500</option>
-          <option value="600">600</option>
         </select>
       </div>
 

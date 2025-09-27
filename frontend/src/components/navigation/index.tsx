@@ -1,11 +1,12 @@
 import { Link, useNavigate} from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/solid";
 import useMediaQuery from "../../hooks/useMediaQuery";
 import {signOut } from "../../features/auth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../../store/store";
 import useScroll from "../../hooks/useScroll";
+
 
 
 const Navigation = () => {
@@ -23,14 +24,19 @@ const Navigation = () => {
 
   const { user, isSucess } = useSelector((state: RootState) => state.auth);
  
-
+  useEffect(() => {
+    console.log(user, "user");
+    console.log(isSucess, "success");
+    
+  }, [user, isSucess])
 
   const handleSignout = () => {
     dispatch(signOut());
     navigate('/')
   };
 
-  const AuthButtons = () =>
+  const AuthButtons = () => (
+    
     user || isSucess ? (
       <button
         onClick={handleSignout}
@@ -45,15 +51,15 @@ const Navigation = () => {
       >
         get started
       </Link>
-    );
-
+    )
+  );
   return (
     <nav>
       <div className={`w-full py-6 z-[200] fixed top-0 left-0 mb-10 `}>
         <div className={`mx-auto w-[85%] ${isTopOfPage}`}>
           <div className={`${flexConts} w-full gap-20`}>
             <Link to="/">
-              <h2 className="font-bold text-2xl text-dark-green-20 capitalize">
+              <h2 className="font-bold text-2xl capitalize">
                 pastquiz ai
               </h2>
             </Link>
@@ -71,7 +77,7 @@ const Navigation = () => {
               </div>
             ) : (
               <button
-                className="rounded-full bg-green-800 p-2 transition duration-300"
+                className="rounded-full bg-black p-2 transition duration-300"
                 onClick={() => setMenuToggled(!menuToggled)}
               >
                 {!menuToggled ? (

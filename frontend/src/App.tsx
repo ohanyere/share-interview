@@ -1,18 +1,18 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom"
 import { Toaster } from "react-hot-toast";
-import SignUp from "./pages/sign-up";
-import SignIn from "./pages/sign-in";
-import NotFound from "./pages/not-found";
-import Home from "./pages/home";
-import ForgetPassword from "./pages/forgot-password";
 import Navigation from "./components/navigation";
 import PrivateRoute from "./components/private-route";
-import ContributeData from "./pages/contribute-data";
-import Questions from "./pages/questions";
-import Question from "./pages/question";
-import UpdateCard from "./components/update-card";
-
-
+import { Suspense, lazy } from "react";
+import Spinner from "./components/spinner";
+const Question = lazy(() => import("./pages/question"))
+const Questions = lazy(() => import("./pages/questions"))
+const UpdateCard = lazy(() => import("./components/update-card"))
+const ContributeData = lazy(() => import("./pages/contribute-data"))
+const Home = lazy(() => import("./pages/home"))
+const ForgetPassword = lazy(() => import("./pages/forgot-password"))
+const SignIn = lazy(() => import("./pages/sign-in"))
+const SignUp = lazy(() => import("./pages/sign-up"))
+const NotFound = lazy(() => import("./pages/not-found"))
 
 
 
@@ -22,9 +22,9 @@ const App = () => {
 
   return (
     <>
-    <BrowserRouter>
+    <Suspense fallback={<Spinner /> }>
+      <BrowserRouter>
     <Navigation />
-    <main className="pt">
 
       <Routes>
       <Route path="/" element={<Home/>} />
@@ -42,8 +42,8 @@ const App = () => {
      <Route path="/cards/:id" element={<Question/>} /> 
      <Route path="/cards/update/:id" element={<UpdateCard />} />
      </Routes>
-      </main> 
     </BrowserRouter>
+    </Suspense>
     <Toaster />
     </>
     

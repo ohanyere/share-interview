@@ -26,7 +26,7 @@ const ForgetPassword = () => {
     try {
       const auth = getAuth();
       await sendPasswordResetEmail(auth, data.email);
-      toast.success(`Reset email sent to ${data.email} ✅`);
+      toast.success(`Reset email sent to ${data.email}`);
     } catch (error) {
       if (error instanceof Error) {
         setError("root", { message: error.message || "Failed to send reset email" });
