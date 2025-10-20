@@ -4,18 +4,17 @@
   "type": "module",
   "main": "server.js",
   "scripts": {
-    "start" : "node backend/server.js",
+    "start": "node backend/server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-     "server": "nodemon backend/server.js",
+    "server": "nodemon backend/server.js",
     "client": "npm start --prefix frontend",
     "dev": "concurrently  \"npm run server\" \"npm run client\"",
-    "heroku-postbuild" : "NPM_CONFIG_PRODUCTION=false npm install --prefix frontend && npm run build --prefix frontend"
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix frontend && npm run build --prefix frontend"
   },
-   "engines": {
+  "engines": {
     "node": "20.x",
     "npm": "10.x"
   },
-
   "keywords": [],
   "author": "",
   "license": "ISC",

@@ -9,7 +9,7 @@ import { resetFlags, signIn, signUpWithGoogle } from "../../features/auth/authSl
 import type { AppDispatch, RootState } from "../../store/store";
 import Button from "../../components/button";
 import { useEffect } from "react";
-{}
+
 
 
 const schema = z.object({
@@ -70,7 +70,9 @@ const Signin = () => {
         {/* Email & Password Form */}
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <input
+            
             type="email"
+            data-testid="email"
             placeholder="Email"
             {...register("email")}
             className="w-full p-3 border border-indigo-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"
@@ -81,6 +83,7 @@ const Signin = () => {
 
           <input
             type="password"
+            data-testid="password"
             placeholder="Password"
             {...register("password")}
             className="w-full p-3 border border-indigo-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"

@@ -29,7 +29,11 @@ test("sign out dispatches logout action", async () => {
   vi.spyOn(redux, "useDispatch").mockReturnValue(mockDispatch);
   vi.spyOn(redux, "useSelector").mockReturnValue({ user: { id: 1, name: "francis" } });
 
-  render(<Navigation />);
+   const { store } = renderWithProvider(<Navigation />, {
+    preloadedState: {
+      auth: { user: { id: 1, name: "francis" }, isSucess: true }
+    }
+  });
 
   const btn = screen.getByRole("button", { name: /sign out/i });
   await userEvent.click(btn);

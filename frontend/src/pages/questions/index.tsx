@@ -121,7 +121,7 @@ useEffect(()=> {
   }
 
   return (
-    <div className="max-w-6xl mx-auto px-4 pt-[7rem]">
+    <div className="max-w-6xl mx-auto px-4 pt-[7rem]" data-testid="filter">
       <div className="flex flex-col sm:flex-row gap-4 mb-8 sticky top-28 left-6">
         <input
           type="text"
@@ -147,7 +147,7 @@ useEffect(()=> {
         </select>
       </div>
 
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3" data-testid="questions">
         {filteredCards.length > 0 ? (
           filteredCards.map((card) => (
             <Link

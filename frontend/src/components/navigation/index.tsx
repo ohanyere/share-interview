@@ -24,11 +24,7 @@ const Navigation = () => {
 
   const { user, isSucess } = useSelector((state: RootState) => state.auth);
  
-  useEffect(() => {
-    console.log(user, "user");
-    console.log(isSucess, "success");
-    
-  }, [user, isSucess])
+  
 
   const handleSignout = () => {
     dispatch(signOut());
@@ -49,7 +45,7 @@ const Navigation = () => {
         to="/view"
         className="px-5 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition capitalize"
       >
-        get started
+        sign out
       </Link>
     )
   );
@@ -79,6 +75,7 @@ const Navigation = () => {
               <button
                 className="rounded-full bg-black p-2 transition duration-300"
                 onClick={() => setMenuToggled(!menuToggled)}
+                data-testid={`${!menuToggled ? "hamburger" : "hamburgerClose"}`}
               >
                 {!menuToggled ? (
                   <Bars3Icon className="h-6 w-6 text-white" />
@@ -99,7 +96,7 @@ const Navigation = () => {
               {/* <XMarkIcon className="h-6 w-6 text-white" /> */}
             </button>
           </div>
-          <div className="flex justify-center h-1/2 items-center flex-col gap-10 text-xl capitalize">
+          <div className="flex justify-center h-1/2 items-center flex-col gap-10 text-xl capitalize" data-testid="MobileMenuChildren">
             <Link to="/view">view questions</Link>
             <Link to="/contribute-data">share questions</Link>
             <AuthButtons />
