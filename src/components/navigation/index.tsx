@@ -1,5 +1,5 @@
 import { Link, useNavigate} from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/solid";
 import useMediaQuery from "../../hooks/useMediaQuery";
 import {signOut } from "../../features/auth/authSlice";
