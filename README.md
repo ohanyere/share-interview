@@ -164,7 +164,7 @@ Deploy the `dist/` folder to:
 
   Feature           Image
   ----------------- -----------------------
-  Home Page         *(./public/ReadmePreview1.png)*
+  Home Page | ![Home Page](./public/ReadmePreview1.png)
   AI Answer Page    *(insert screenshot)*
   Upload Workflow   *(insert screenshot)*
 
